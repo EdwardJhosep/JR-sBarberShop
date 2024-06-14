@@ -211,7 +211,7 @@
     <footer class="footer-custom">
         <div class="container text-center">
             <a class="navbar-brand" href="#">
-                <img src="/imagenes/logo.png" alt="Logo                 de JR's Barber Shop" class="img-fluid">
+                <img src="/imagenes/logo.png" alt="Logo de JR's Barber Shop" class="img-fluid">
             </a>
             <p>&copy; 2024 JR's Barber Shop. Todos los derechos reservados.</p>
         </div>
@@ -240,7 +240,7 @@
                 var formData = new FormData(this);
 
                 $.ajax({
-                    url: 'https://roqridu.nyc.dom.my.id/api/cliente/register',
+                    url: 'http://lamhusu.blr.dom.my.id/api/cliente/register',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -266,31 +266,36 @@
             });
 
             $('#loginForm').on('submit', function (e) {
-                e.preventDefault();
-                var formData = {
-                    email: $('#username').val(),
-                    password: $('#password').val()
-                };
+    e.preventDefault();
+    var formData = {
+        email: $('#username').val(),
+        password: $('#password').val()
+    };
 
-                $.ajax({
-                    url: 'https://roqridu.nyc.dom.my.id/api/cliente/login',
-                    type: 'POST',
-                    data: formData,
-                    success: function (response) {
-                        alert('Inicio de sesión exitoso');
-                        // Redirigir al usuario a productos.blade.php
-                        window.location.href = '{{ route('productos') }}';
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error('Error:', errorThrown);
-                        if (jqXHR.responseJSON && jqXHR.responseJSON.error) {
-                            alert(jqXHR.responseJSON.error);
-                        } else {
-                            alert('Hubo un error al iniciar sesión. Por favor, inténtalo de nuevo.');
-                        }
-                    }
-                });
-            });
+    $.ajax({
+        url: 'http://lamhusu.blr.dom.my.id/api/cliente/login',
+        type: 'POST',
+        data: formData,
+        success: function (response) {
+            alert('Inicio de sesión exitoso');
+
+            // Guardar el cliente en localStorage para usarlo en la página de productos
+            localStorage.setItem('cliente', JSON.stringify(response.cliente));
+
+            // Redirigir al usuario a la página de productos
+            window.location.href = '/productos'; // Ajustar la ruta según tu configuración
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+            if (jqXHR.responseJSON && jqXHR.responseJSON.error) {
+                alert(jqXHR.responseJSON.error);
+            } else {
+                alert('Hubo un error al iniciar sesión. Por favor, inténtalo de nuevo.');
+            }
+        }
+    });
+});
+
         });
     </script>
 </body>
