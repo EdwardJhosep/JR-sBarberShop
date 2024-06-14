@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
+    <title>Login y Registro</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome -->
@@ -96,11 +96,10 @@
     </style>
 </head>
 <body>
-
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">
+            <a class="navbar-brand" href="#">
                 <img src="/imagenes/logo.png" alt="Logo de JR's Barber Shop" width="30" height="30" class="mr-2">
                 JR's Barber Shop
             </a>
@@ -112,16 +111,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">Inicio</a>
+                        <a class="nav-link" href="#">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('servicios') }}">Servicios</a>
+                        <a class="nav-link" href="#">Servicios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('contacto') }}">Contacto</a>
+                        <a class="nav-link" href="#">Contacto</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">Iniciar sesión</a>
+                        <a class="nav-link" href="#">Iniciar sesión</a>
                     </li>
                 </ul>
             </div>
@@ -143,10 +142,10 @@
     <!-- Formulario de login -->
     <div class="login-form">
         <h2>Iniciar sesión</h2>
-        <form id="loginForm" onsubmit="event.preventDefault(); loginUser();">
+        <form id="loginForm" action="#" method="POST">
             <div class="form-group">
-                <label for="username">Nombre de usuario</label>
-                <input type="text" id="username" name="username" class="form-control" required>
+                <label for="username">Correo electrónico</label>
+                <input type="email" id="username" name="email" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="password">Contraseña</label>
@@ -160,36 +159,38 @@
     </div>
 
     <!-- Formulario de registro (oculto inicialmente) -->
-    <div class="register-form" style="display: none;">
+    <div class="register-form" id="register-form" style="display: none;">
         <h2>Registro</h2>
-        <form id="registerForm" onsubmit="event.preventDefault(); registerUser();">
+        <form id="registerForm" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="fullname">Nombre completo</label>
-                <input type="text" id="fullname" name="nombre" class="form-control" required>
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="telefono">Teléfono</label>
-                <input type="text" id="telefono" name="telefono" class="form-control" required>
+                <input type="tel" id="telefono" name="telefono" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="email">Correo electrónico</label>
                 <input type="email" id="email" name="email" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="newpassword">Contraseña</label>
-                <input type="password" id="newpassword" name="password" class="form-control" required>
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="genero">Género</label>
                 <select id="genero" name="genero" class="form-control" required>
-                    <option value="Masculino">Masculino</option>
-                    <option value="Femenino">Femenino</option>
-                    <option value="Otro">Otro</option>
+                    <option value="">Selecciona tu género</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="femenino">Femenino</option>
+                    <option value="otro">Otro</option>
+                    <option value="prefiero_no_decirlo">Prefiero no decirlo</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="foto">Foto (opcional)</label>
-                <input type="file" id="foto" name="foto" class="form-control-file">
+                <label for="foto">Foto</label>
+                <input type="file" id="foto" name="foto" class="form-control" accept="image/*" required>
             </div>
             <button type="submit" class="btn btn-block">Registrarse</button>
         </form>
@@ -207,98 +208,91 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer-custom text-center">
-        <div class="container>
-            <div class="row">
-                <div class="col-md-12">
-                    <a class="navbar-brand" href="#">
-                        <img src="/imagenes/logo.png" alt="Logo de JR's Barber Shop" width="30" height="30" class="mr-2">
-                        JR's Barber Shop
-                    </a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <p>&copy; 2024 JR's Barber Shop. Todos los derechos reservados.</p>
-                </div>
-            </div>
+    <footer class="footer-custom">
+        <div class="container text-center">
+            <a class="navbar-brand" href="#">
+                <img src="/imagenes/logo.png" alt="Logo                 de JR's Barber Shop" class="img-fluid">
+            </a>
+            <p>&copy; 2024 JR's Barber Shop. Todos los derechos reservados.</p>
         </div>
     </footer>
 
-    <!-- Bootstrap JS y dependencias -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <!-- Font Awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
-
-    <!-- Script para alternar entre formularios -->
     <script>
-        function toggleForm(type) {
-            if (type === 'register') {
+        function toggleForm(form) {
+            if (form === 'register') {
                 $('.login-form').hide();
                 $('.register-form').show();
             } else {
-                $('.register-form').hide();
                 $('.login-form').show();
+                $('.register-form').hide();
             }
         }
 
-        // Función para registrar un nuevo usuario
-        function registerUser() {
-            var form = $('#registerForm')[0];
-            var data = new FormData(form);
+        $(document).ready(function () {
+            $('#registerForm').on('submit', function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
 
-            $.ajax({
-                type: 'POST',
-                url: 'https://roqridu.nyc.dom.my.id/api/cliente/register',
-                enctype: 'multipart/form-data',
-                processData: false,
-                contentType: false,
-                cache: false,
-                data: data,
-                success: function(response) {
-                    console.log('Registro exitoso:', response);
-                    alert('¡Registro exitoso!');
-                    // Opcionalmente, puedes redirigir al usuario a otra página tras el registro exitoso
-                    // window.location.href = '/ruta-de-redireccion';
-                },
-                error: function(error) {
-                    console.error('Error en el registro:', error);
-                    alert('Error en el registro. Por favor, inténtalo de nuevo más tarde.');
-                }
+                $.ajax({
+                    url: 'https://roqridu.nyc.dom.my.id/api/cliente/register',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        alert('Registro exitoso');
+                        toggleForm('login');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        if (jqXHR.responseJSON && jqXHR.responseJSON.errors) {
+                            const errors = jqXHR.responseJSON.errors;
+                            let errorMessage = 'Hubo errores con tu registro:\n';
+                            $.each(errors, function(key, value) {
+                                errorMessage += `\n- ${value}`;
+                            });
+                            alert(errorMessage);
+                        } else {
+                            alert('Hubo un error con el registro. Por favor, inténtalo de nuevo.');
+                        }
+                    }
+                });
             });
-        }
 
-        // Función para iniciar sesión
-        function loginUser() {
-            var username = $('#username').val();
-            var password = $('#password').val();
+            $('#loginForm').on('submit', function (e) {
+                e.preventDefault();
+                var formData = {
+                    email: $('#username').val(),
+                    password: $('#password').val()
+                };
 
-            var data = {
-                username: username,
-                password: password
-            };
-
-            $.ajax({
-                type: 'POST',
-                url: 'https://roqridu.nyc.dom.my.id/api/cliente/login',
-                data: data,
-                success: function(response) {
-                    console.log('Inicio de sesión exitoso:', response);
-                    alert('¡Inicio de sesión exitoso!');
-                    // Opcionalmente, puedes redirigir al usuario a otra página tras el inicio de sesión exitoso
-                    // window.location.href = '/ruta-de-redireccion';
-                },
-                error: function(error) {
-                    console.error('Error en el inicio de sesión:', error);
-                    alert('Error en el inicio de sesión. Verifica tus credenciales.');
-                }
+                $.ajax({
+                    url: 'https://roqridu.nyc.dom.my.id/api/cliente/login',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        alert('Inicio de sesión exitoso');
+                        // Redirigir al usuario a productos.blade.php
+                        window.location.href = '{{ route('productos') }}';
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        if (jqXHR.responseJSON && jqXHR.responseJSON.error) {
+                            alert(jqXHR.responseJSON.error);
+                        } else {
+                            alert('Hubo un error al iniciar sesión. Por favor, inténtalo de nuevo.');
+                        }
+                    }
+                });
             });
-        }
+        });
     </script>
-
 </body>
 </html>
 
