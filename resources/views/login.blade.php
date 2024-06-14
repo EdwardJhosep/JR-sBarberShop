@@ -87,6 +87,12 @@
             margin: 0 10px;
             color: #007bff;
         }
+
+        @media (max-width: 768px) {
+            .navbar-brand {
+                margin-right: 0 !important; /* Ajuste para evitar que se superponga el botón de menú */
+            }
+        }
     </style>
 </head>
 <body>
@@ -98,9 +104,11 @@
                 <img src="/imagenes/logo.png" alt="Logo de JR's Barber Shop" width="30" height="30" class="mr-2">
                 JR's Barber Shop
             </a>
+            <!-- Botón de menú para dispositivos móviles -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <!-- Menú de navegación -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -135,7 +143,7 @@
     <!-- Formulario de login -->
     <div class="login-form">
         <h2>Iniciar sesión</h2>
-        <form action="#" method="POST">
+        <form id="loginForm" onsubmit="event.preventDefault(); loginUser();">
             <div class="form-group">
                 <label for="username">Nombre de usuario</label>
                 <input type="text" id="username" name="username" class="form-control" required>
@@ -154,22 +162,34 @@
     <!-- Formulario de registro (oculto inicialmente) -->
     <div class="register-form" style="display: none;">
         <h2>Registro</h2>
-        <form action="#" method="POST">
+        <form id="registerForm" onsubmit="event.preventDefault(); registerUser();">
             <div class="form-group">
                 <label for="fullname">Nombre completo</label>
-                <input type="text" id="fullname" name="fullname" class="form-control" required>
+                <input type="text" id="fullname" name="nombre" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono" name="telefono" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="email">Correo electrónico</label>
                 <input type="email" id="email" name="email" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="newusername">Nombre de usuario</label>
-                <input type="text" id="newusername" name="newusername" class="form-control" required>
+                <label for="newpassword">Contraseña</label>
+                <input type="password" id="newpassword" name="password" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="newpassword">Contraseña</label>
-                <input type="password" id="newpassword" name="newpassword" class="form-control" required>
+                <label for="genero">Género</label>
+                <select id="genero" name="genero" class="form-control" required>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="foto">Foto (opcional)</label>
+                <input type="file" id="foto" name="foto" class="form-control-file">
             </div>
             <button type="submit" class="btn btn-block">Registrarse</button>
         </form>
@@ -188,7 +208,7 @@
 
     <!-- Footer -->
     <footer class="footer-custom text-center">
-        <div class="container">
+        <div class="container>
             <div class="row">
                 <div class="col-md-12">
                     <a class="navbar-brand" href="#">
@@ -208,6 +228,9 @@
     <!-- Bootstrap JS y dependencias -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Font Awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 
     <!-- Script para alternar entre formularios -->
@@ -220,6 +243,59 @@
                 $('.register-form').hide();
                 $('.login-form').show();
             }
+        }
+
+        // Función para registrar un nuevo usuario
+        function registerUser() {
+            var form = $('#registerForm')[0];
+            var data = new FormData(form);
+
+            $.ajax({
+                type: 'POST',
+                url: 'https://roqridu.nyc.dom.my.id/api/cliente/register',
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                data: data,
+                success: function(response) {
+                    console.log('Registro exitoso:', response);
+                    alert('¡Registro exitoso!');
+                    // Opcionalmente, puedes redirigir al usuario a otra página tras el registro exitoso
+                    // window.location.href = '/ruta-de-redireccion';
+                },
+                error: function(error) {
+                    console.error('Error en el registro:', error);
+                    alert('Error en el registro. Por favor, inténtalo de nuevo más tarde.');
+                }
+            });
+        }
+
+        // Función para iniciar sesión
+        function loginUser() {
+            var username = $('#username').val();
+            var password = $('#password').val();
+
+            var data = {
+                username: username,
+                password: password
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: 'https://roqridu.nyc.dom.my.id/api/cliente/login',
+                data: data,
+                success: function(response) {
+                    console.log('Inicio de sesión exitoso:', response);
+                    alert('¡Inicio de sesión exitoso!');
+                    // Opcionalmente, puedes redirigir al usuario a otra página tras el inicio de sesión exitoso
+                    // window.location.href = '/ruta-de-redireccion';
+                },
+                error: function(error) {
+                    console.error('Error en el inicio de sesión:', error);
+                    alert('Error en el inicio de sesión. Verifica tus credenciales.');
+                }
+            });
         }
     </script>
 

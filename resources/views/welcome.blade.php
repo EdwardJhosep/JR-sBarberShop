@@ -53,6 +53,7 @@
             padding: 20px;
             margin-bottom: 10px;
             height: 100%;
+            text-align: center; /* Centra el contenido */
         }
         .service-item img {
             max-width: 100%;
@@ -186,3 +187,4 @@
 </body>
 </html>
 
+               
