@@ -99,28 +99,26 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="/imagenes/logo.png" alt="Logo de JR's Barber Shop" width="30" height="30" class="mr-2">
                 JR's Barber Shop
             </a>
-            <!-- Botón de menú para dispositivos móviles -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!-- Menú de navegación -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Inicio</a>
+                        <a class="nav-link" href="{{ route('home') }}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Servicios</a>
+                        <a class="nav-link" href="{{ route('servicios') }}">Servicios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contacto</a>
+                        <a class="nav-link" href="{{ route('contacto') }}">Contacto</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Iniciar sesión</a>
+                        <a class="nav-link" href="{{ route('login') }}">Iniciar sesión</a>
                     </li>
                 </ul>
             </div>
@@ -240,7 +238,7 @@
                 var formData = new FormData(this);
 
                 $.ajax({
-                    url: 'http://lamhusu.blr.dom.my.id/api/cliente/register',
+                    url: 'https://vijfatu.nyc.dom.my.id/api/cliente/register',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -266,38 +264,40 @@
             });
 
             $('#loginForm').on('submit', function (e) {
-    e.preventDefault();
-    var formData = {
-        email: $('#username').val(),
-        password: $('#password').val()
-    };
+                e.preventDefault();
+                var formData = {
+                    email: $('#username').val(),
+                    password: $('#password').val()
+                };
 
-    $.ajax({
-        url: 'http://lamhusu.blr.dom.my.id/api/cliente/login',
-        type: 'POST',
-        data: formData,
-        success: function (response) {
-            alert('Inicio de sesión exitoso');
+                $.ajax({
+                    url: 'https://vijfatu.nyc.dom.my.id/api/cliente/login',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        alert('Inicio de sesión exitoso');
 
-            // Guardar el cliente en localStorage para usarlo en la página de productos
-            localStorage.setItem('cliente', JSON.stringify(response.cliente));
+                        // Guardar el cliente en localStorage para usarlo en la página de productos
+                        localStorage.setItem('cliente', JSON.stringify(response.cliente));
 
-            // Redirigir al usuario a la página de productos
-            window.location.href = '/productos'; // Ajustar la ruta según tu configuración
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.error('Error:', errorThrown);
-            if (jqXHR.responseJSON && jqXHR.responseJSON.error) {
-                alert(jqXHR.responseJSON.error);
-            } else {
-                alert('Hubo un error al iniciar sesión. Por favor, inténtalo de nuevo.');
-            }
-        }
-    });
-});
-
+                        // Redirigir según el correo electrónico
+                        if (formData.email === 'juananterodrigueze@gmail.com') {
+                            window.location.href = '/admin'; // Ajustar la ruta según tu configuración
+                        } else {
+                            window.location.href = '/productos'; // Ajustar la ruta según tu configuración
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                        if (jqXHR.responseJSON && jqXHR.responseJSON.error) {
+                            alert(jqXHR.responseJSON.error);
+                        } else {
+                            alert('Hubo un error al iniciar sesión. Por favor, inténtalo de nuevo.');
+                        }
+                    }
+                });
+            });
         });
     </script>
 </body>
 </html>
-

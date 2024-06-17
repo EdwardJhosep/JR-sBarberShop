@@ -32,5 +32,25 @@ class PagesController extends Controller
 
             return view('productos');
         }
-
+        public function admin()
+    {
+        return view('admin');
+    }
+    public function notificacion()
+    {
+        return view('notificacion');
+    }
+    public function citas()
+    {
+        return view('citas');
+    }
+    public function empleados()
+    {
+        return view('empleados');
+    }
+    public function servicios1()
+    {
+        return view('servicios1');
+    }
+   
 }
