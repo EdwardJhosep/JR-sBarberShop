@@ -78,41 +78,48 @@
             display: none; /* Ocultar el formulario inicialmente */
         }
         /* Estilos adicionales para la lista de empleados */
-#empleados-lista .card {
-    border: none;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
+        #empleados-lista .card {
+            border: none;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            margin-bottom: 20px; /* Espacio entre las tarjetas */
+        }
 
-#empleados-lista .card:hover {
-    transform: translateY(-5px);
-}
+        #empleados-lista .card:hover {
+            transform: translateY(-5px);
+        }
 
-#empleados-lista .card img {
-    height: 200px;
-    object-fit: cover;
-}
+        #empleados-lista .card img {
+            height: 200px;
+            object-fit: cover;
+        }
 
-#empleados-lista .card-body {
-    padding: 1.5rem;
-}
+        #empleados-lista .card-body {
+            padding: 1.5rem;
+        }
 
-#empleados-lista .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 0.75rem;
-}
+        #empleados-lista .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+        }
 
-#empleados-lista .card-text {
-    margin-bottom: 0.5rem;
-}
+        #empleados-lista .card-text {
+            margin-bottom: 0.5rem;
+        }
 
-@media (max-width: 768px) {
-    #empleados-lista .card {
-        margin-bottom: 30px;
-    }
-}
+        @media (max-width: 992px) {
+            #empleados-lista .card {
+                flex-basis: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 576px) {
+            #empleados-lista .card {
+                flex-basis: calc(100% - 20px);
+            }
+        }
 
     </style>
 </head>
@@ -189,10 +196,15 @@
                 </div>
 
                 <div class="access-denied-message" id="accessDeniedMessage">Acceso restringido. Redirigiendo al login...</div>
+
+                <div class="form-group mt-4">
+                    <input type="text" class="form-control" id="buscador" placeholder="Buscar empleado...">
+                </div>
             </div>
-            <div class="row" id="empleados-lista">
+            
+            <div id="empleados-lista" class="row">
                 <!-- Aquí se mostrará la lista de empleados -->
-            </div>            
+            </div>  
             <div class="col-md-4">
                 <div class="floating-profile" id="floatingProfile">
                     <div class="card">
@@ -203,10 +215,8 @@
                 </div>
             </div>
         </div>
-        <div class="row" id="empleados-lista">
-            <!-- Aquí se mostrará la lista de empleados -->
-        </div>  
     </div>
+
     <footer class="footer-custom">
         <div class="container text-center">
             <a class="navbar-brand" href="#">
@@ -215,12 +225,11 @@
             <p>&copy; 2024 JR's Barber Shop. Todos los derechos reservados.</p>
         </div>
     </footer>
-    <!-- Bootstrap JS y jQuery CDN -->
+    <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <!-- Bootstrap JS CDN -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <!-- Font Awesome CDN -->
+    <!-- Font Awesome JS CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 
     <script>
@@ -232,6 +241,7 @@
         var floatingProfile = document.getElementById('floatingProfile');
         var clientPhoto = document.getElementById('clientPhoto');
         var empleadosLista = document.getElementById('empleados-lista');
+        var buscador = document.getElementById('buscador');
 
         // Evento para mostrar el formulario al hacer clic en el botón
         mostrarFormularioBtn.addEventListener('click', function() {
@@ -384,41 +394,58 @@
 
         // Función para obtener y mostrar la lista de empleados
         function mostrarEmpleados() {
-    fetch('https://vijfatu.nyc.dom.my.id/api/verempleados')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la petición');
-            }
-            return response.json();
-        })
-        .then(data => {
-            empleadosLista.innerHTML = ''; // Limpiar la lista antes de agregar empleados
-            data.forEach(empleado => {
-                empleadosLista.innerHTML += `
-                    <div class="col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <img src="${empleado.foto}" class="card-img-top" alt="Foto de ${empleado.nombre}">
-                            <div class="card-body">
-                                <h5 class="card-title">${empleado.nombre}</h5>
-                                <p class="card-text"><strong>Teléfono:</strong> ${empleado.telefono}</p>
-                                <p class="card-text"><strong>Tipo:</strong> ${empleado.tipo}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <button type="button" class="btn btn-warning btn-editar" data-empleado-id="${empleado.id}">Editar</button>
-                                    <button type="button" class="btn btn-danger btn-eliminar" data-empleado-id="${empleado.id}">Eliminar</button>
+            fetch('https://vijfatu.nyc.dom.my.id/api/verempleados')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la petición');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    empleadosLista.innerHTML = ''; // Limpiar la lista antes de agregar empleados
+                    data.forEach(empleado => {
+                        empleadosLista.innerHTML += `
+                            <div class="col-md-4 mb-4" id="empleado-${empleado.id}">
+                                <div class="card">
+                                    <img src="${empleado.foto}" class="card-img-top" alt="Foto de ${empleado.nombre}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${empleado.nombre}</h5>
+                                        <p class="card-text"><strong>Teléfono:</strong> ${empleado.telefono}</p>
+                                        <p class="card-text"><strong>Tipo:</strong> ${empleado.tipo}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <button type="button" class="btn btn-warning btn-editar" data-empleado-id="${empleado.id}">Editar</button>
+                                            <button type="button" class="btn btn-danger btn-eliminar" data-empleado-id="${empleado.id}">Eliminar</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                `;
-            });
-        })
-        .catch(error => {
-            console.error('Error al obtener empleados:', error);
-        });
-}
+                        `;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al obtener empleados:', error);
+                });
+        }
+
         // Llamar a la función para mostrar empleados al cargar la página
         document.addEventListener('DOMContentLoaded', function() {
             mostrarEmpleados();
+        });
+
+        // Evento para buscar empleados en tiempo real
+        buscador.addEventListener('input', function(event) {
+            var valorBusqueda = event.target.value.trim().toLowerCase();
+            var cards = empleadosLista.getElementsByClassName('col-md-4');
+
+            Array.from(cards).forEach(function(card) {
+                var nombreEmpleado = card.querySelector('.card-title').textContent.trim().toLowerCase();
+
+                if (nombreEmpleado.includes(valorBusqueda)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         });
     </script>
 </body>
