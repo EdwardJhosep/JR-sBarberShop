@@ -255,7 +255,7 @@
 
             var formData = new FormData(formEmpleado);
 
-            fetch('https://vijfatu.nyc.dom.my.id/api/agregarempleado', {
+            fetch('https://pakyavo.nyc.dom.my.id/api/empleados', {
                 method: 'POST',
                 body: formData
             })
@@ -282,7 +282,7 @@
         // Función para obtener la información del cliente desde la API
         function obtenerInformacionCliente(id) {
             var xhr = new XMLHttpRequest();
-            var url = 'https://vijfatu.nyc.dom.my.id/api/mostrarcliente/' + id;
+            var url = 'https://pakyavo.nyc.dom.my.id/api/mostrarcliente/' + id;
 
             xhr.open('GET', url, true);
 
@@ -335,7 +335,7 @@
         // Función para cerrar sesión llamando a la API
         function cerrarSesion() {
             var xhr = new XMLHttpRequest();
-            var url = 'https://vijfatu.nyc.dom.my.id/api/cliente/logout';
+            var url = 'https://pakyavo.nyc.dom.my.id/api/cliente/logout';
 
             xhr.open('POST', url, true);
             xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -394,7 +394,7 @@
 
         // Función para obtener y mostrar la lista de empleados
         function mostrarEmpleados() {
-            fetch('https://vijfatu.nyc.dom.my.id/api/verempleados')
+            fetch('https://pakyavo.nyc.dom.my.id/api/verempleados')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error en la petición');

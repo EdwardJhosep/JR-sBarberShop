@@ -238,7 +238,8 @@
                 var formData = new FormData(this);
 
                 $.ajax({
-                    url: 'https://vijfatu.nyc.dom.my.id/api/cliente/register',
+                    url: 'https://pakyavo.nyc.dom.my.id/api/cliente/register',
+                    
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -271,7 +272,7 @@
                 };
 
                 $.ajax({
-                    url: 'https://vijfatu.nyc.dom.my.id/api/cliente/login',
+                    url: 'https://pakyavo.nyc.dom.my.id/api/cliente/login',
                     type: 'POST',
                     data: formData,
                     success: function (response) {

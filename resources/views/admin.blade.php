@@ -169,7 +169,7 @@
         // Función para obtener la información del cliente desde la API
         function obtenerInformacionCliente(id) {
             var xhr = new XMLHttpRequest();
-            var url = 'https://vijfatu.nyc.dom.my.id/api/mostrarcliente/' + id;
+            var url = 'https://pakyavo.nyc.dom.my.id/api/mostrarcliente/' + id;
 
             xhr.open('GET', url, true);
 
@@ -222,7 +222,7 @@
         // Función para cerrar sesión llamando a la API
         function cerrarSesion() {
             var xhr = new XMLHttpRequest();
-            var url = 'https://vijfatu.nyc.dom.my.id/api/cliente/logout';
+            var url = 'https://pakyavo.nyc.dom.my.id/api/cliente/logout';
 
             xhr.open('POST', url, true);
             xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
