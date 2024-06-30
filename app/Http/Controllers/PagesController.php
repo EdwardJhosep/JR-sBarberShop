@@ -52,5 +52,9 @@ class PagesController extends Controller
     {
         return view('servicios1');
     }
+    public function miscitas()
+    {
+        return view('miscitas');
+    }
    
 }

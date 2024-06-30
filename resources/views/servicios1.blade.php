@@ -109,24 +109,40 @@
         }
         .service-card {
             margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
         }
         .service-card img {
             max-height: 200px;
             object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            z-index: 10;
+        }
+        .service-card:hover img {
+            transform: scale(1.1);
         }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
-        <a class="navbar-brand" href="#"></a>
+        <a class="navbar-brand" href="#">
+            <img src="/imagenes/logo.png" alt="Logo de JR's Barber Shop" width="30" height="30" class="mr-2">
+            JR's Barber Shop
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <a class="navbar-brand" href="#">
-                <img src="/imagenes/logo.png" alt="Logo de JR's Barber Shop" width="30" height="30" class="mr-2">
-                JR's Barber Shop
-            </a>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin') }}">Inicio</a>
@@ -167,15 +183,7 @@
                     <!-- Mostrar la información del cliente aquí -->
                 </div>
                 <div class="access-denied-message" id="accessDeniedMessage">Acceso restringido. Redirigiendo al login...</div>
-
-                <div class="service-container" id="serviceContainer">
-                    <!-- Aquí se mostrarán los servicios -->
-                </div>
-                
-                <!-- Botón para mostrar/ocultar el formulario -->
                 <button class="btn btn-secondary btn-toggle-form" id="toggleFormBtn">Mostrar Formulario</button>
-
-                <!-- Formulario para agregar servicios -->
                 <div class="form-container" id="formContainer">
                     <h2 class="form-title">Agregar Servicio</h2>
                     <form id="agregarServicioForm">
@@ -199,14 +207,6 @@
                             <label for="foto1">Foto 1</label>
                             <input type="file" class="form-control-file" id="foto1" name="foto1">
                         </div>
-                        <div class="form-group">
-                            <label for="foto2">Foto 2</label>
-                            <input type="file" class="form-control-file" id="foto2" name="foto2">
-                        </div>
-                        <div class="form-group">
-                            <label for="foto3">Foto 3</label>
-                            <input type="file" class="form-control-file" id="foto3" name="foto3">
-                        </div>
                         <button type="submit" class="btn btn-primary">Agregar Servicio</button>
                     </form>
                 </div>
@@ -222,14 +222,16 @@
             </div>
         </div>
     </div>
-
-    <footer class="footer-custom">
-        <div class="container text-center">
-            <a class="navbar-brand" href="#">
-                <img src="/imagenes/logo.png" alt="Logo de JR's Barber Shop" class="img-fluid">
-            </a>
-            <p>Derechos reservados &copy; 2024</p>
+    <div class="container mt-4">
+        <div class="row service-container" id="serviceContainer">
+            <!-- Mostrar los servicios aquí -->
         </div>
+    </div>
+    <footer class="footer-custom text-center">
+        <a href="#" class="navbar-brand">
+            <img src="/imagenes/logoc.png" alt="Logo de JR's Barber Shop" class="img-fluid">
+        </a>
+        <p>Trabajamos para atenderle</p>
     </footer>
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->
@@ -247,20 +249,20 @@
             var formContainer = document.getElementById('formContainer');
             var toggleFormBtn = document.getElementById('toggleFormBtn');
             var serviceContainer = document.getElementById('serviceContainer');
-
+    
             var cliente = JSON.parse(localStorage.getItem('cliente'));
-
+    
             // Función para obtener la información del cliente desde la API
             function obtenerInformacionCliente(id) {
                 var xhr = new XMLHttpRequest();
                 var url = 'https://pakyavo.nyc.dom.my.id/api/mostrarcliente/' + id;
-
+    
                 xhr.open('GET', url, true);
-
+    
                 xhr.onload = function() {
                     if (xhr.status === 200) {
                         var clienteData = JSON.parse(xhr.responseText).cliente;
-
+    
                         // Mostrar la información del cliente en el perfil
                         perfilCliente.innerHTML = `
                             <p><strong>ID:</strong> ${id}</p>
@@ -270,10 +272,10 @@
                             <p><strong>Teléfono:</strong> ${clienteData.telefono}</p>
                             <img src="${clienteData.foto}" alt="Foto del cliente" class="img-fluid rounded-circle">
                         `;
-
+    
                         // Mostrar la foto del cliente en el menú
                         clientPhoto.src = clienteData.foto;
-
+    
                         // Mostrar el perfil flotante
                         floatingProfile.style.display = 'block';
                     } else {
@@ -281,36 +283,36 @@
                         mostrarAccesoRestringido();
                     }
                 };
-
+    
                 xhr.onerror = function() {
                     console.error('Error de red al intentar obtener la información del cliente.');
                     mostrarAccesoRestringido();
                 };
-
+    
                 xhr.send();
             }
-
+    
             // Función para redirigir a la página de login
             function redirigirALogin() {
                 setTimeout(function() {
                     window.location.href = 'login'; // Ajusta la URL según tu estructura de archivos
                 }, 2000); // Redirigir después de 2 segundos (ajusta el tiempo según tus necesidades)
             }
-
+    
             // Función para mostrar el mensaje de acceso restringido y redirigir
             function mostrarAccesoRestringido() {
                 accessDeniedMessage.style.display = 'block';
                 redirigirALogin();
             }
-
+    
             // Función para cerrar sesión llamando a la API
             function cerrarSesion() {
                 var xhr = new XMLHttpRequest();
                 var url = 'https://pakyavo.nyc.dom.my.id/api/cliente/logout';
-
+    
                 xhr.open('POST', url, true);
                 xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-
+    
                 xhr.onload = function() {
                     if (xhr.status === 200) {
                         console.log('Sesión cerrada correctamente');
@@ -321,14 +323,14 @@
                         console.error('Error al cerrar sesión:', xhr.statusText);
                     }
                 };
-
+    
                 xhr.onerror = function() {
                     console.error('Error de red al intentar cerrar la sesión.');
                 };
-
+    
                 xhr.send();
             }
-
+    
             // Verificar si existe el cliente en localStorage y obtener su información
             if (cliente && cliente.id) {
                 // Mostrar la foto del cliente en el menú
@@ -339,20 +341,20 @@
                 // No se encontraron datos del cliente en localStorage, redirigir a la página de login
                 mostrarAccesoRestringido();
             }
-
+    
             // Evento para cerrar sesión
             cerrarSesionBtn.addEventListener('click', function(event) {
                 event.preventDefault();
                 cerrarSesion();
             });
-
+    
             // Evento para ver perfil
             verPerfilBtn.addEventListener('click', function(event) {
                 event.preventDefault();
                 // Mostrar el perfil del cliente
                 obtenerInformacionCliente(cliente.id);
             });
-
+    
             // Evento para ocultar el perfil flotante al hacer clic fuera de él
             document.addEventListener('click', function(event) {
                 var isClickInside = floatingProfile.contains(event.target);
@@ -361,30 +363,31 @@
                     floatingProfile.style.display = 'none';
                 }
             });
-
-            // Función para manejar la respuesta del servidor
+    
+            // Función para manejar la respuesta del servidor al agregar un servicio
             function handleResponse(xhr) {
                 if (xhr.status === 201) {
                     alert('Servicio agregado exitosamente');
                     document.getElementById('agregarServicioForm').reset(); // Limpiar el formulario
+                    obtenerServicios(); // Actualizar la lista de servicios
+                    formContainer.classList.remove('show'); // Ocultar el formulario
+                    toggleFormBtn.textContent = 'Mostrar Formulario'; // Cambiar texto del botón
                 } else {
                     alert('Error al agregar el servicio: ' + xhr.statusText);
                 }
             }
-
-            // Evento para manejar el envío del formulario
+    
+            // Evento para manejar el envío del formulario de agregar servicio
             document.getElementById('agregarServicioForm').addEventListener('submit', function(event) {
                 event.preventDefault();
-
+    
                 var formData = new FormData();
                 formData.append('nombre', document.getElementById('nombre').value);
                 formData.append('descripcion', document.getElementById('descripcion').value);
                 formData.append('precio', document.getElementById('precio').value);
                 formData.append('descuento', document.getElementById('descuento').value);
                 formData.append('foto1', document.getElementById('foto1').files[0]);
-                formData.append('foto2', document.getElementById('foto2').files[0]);
-                formData.append('foto3', document.getElementById('foto3').files[0]);
-
+    
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', 'https://pakyavo.nyc.dom.my.id/api/servicios', true);
                 xhr.onload = function() {
@@ -395,59 +398,69 @@
                 };
                 xhr.send(formData);
             });
-
-            // Evento para mostrar/ocultar el formulario
+    
+            // Evento para mostrar/ocultar el formulario de agregar servicio
             toggleFormBtn.addEventListener('click', function() {
                 formContainer.classList.toggle('show');
-                toggleFormBtn.textContent = formContainer.classList.contains('show') ? 'Ocultar Formulario' : 'Mostrar Formulario';
+                if (formContainer.classList.contains('show')) {
+                    toggleFormBtn.textContent = 'Ocultar Formulario';
+                } else {
+                    toggleFormBtn.textContent = 'Mostrar Formulario';
+                }
             });
-
-            // Función para obtener los servicios desde la API
+    
+            // Función para obtener los servicios desde la API y mostrarlos en la página
             function obtenerServicios() {
                 var xhr = new XMLHttpRequest();
                 var url = 'https://pakyavo.nyc.dom.my.id/api/verservicios';
-
+    
                 xhr.open('GET', url, true);
-
+    
                 xhr.onload = function() {
                     if (xhr.status === 200) {
                         var servicios = JSON.parse(xhr.responseText);
-
+    
                         // Limpiar el contenedor de servicios
                         serviceContainer.innerHTML = '';
-
+    
                         // Mostrar los servicios en el contenedor
                         servicios.forEach(function(servicio) {
-                            var servicioHTML = `
-                                <div class="col-md-4 service-card">
-                                    <div class="card">
-                                        <img src="${servicio.foto1}" class="card-img-top" alt="Imagen del servicio">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${servicio.nombre}</h5>
-                                            <p class="card-text">${servicio.descripcion}</p>
-                                            <p class="card-text"><strong>Precio:</strong> ${servicio.precio}</p>
-                                            <p class="card-text"><strong>Descuento:</strong> ${servicio.descuento}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                            serviceContainer.innerHTML += servicioHTML;
-                        });
+    var servicioHTML = `
+        <div class="col-md-4 service-card">
+            <div class="card">
+                <div class="discount-badge">${servicio.descuento}</div>
+                <img src="${servicio.foto1}" class="card-img-top" alt="Imagen del servicio">
+                <div class="card-body">
+                    <h5 class="card-title">${servicio.nombre}</h5>
+                    <p class="card-text">${servicio.descripcion}</p>
+                    <p class="card-text"><strong>Precio final :</strong> ${servicio.precio_final}</p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <button class="btn btn-primary edit-button" onclick="editarServicio(${servicio.id})">Editar</button>
+                    <button class="btn btn-danger delete-button" onclick="eliminarServicio(${servicio.id})">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    `;
+    serviceContainer.innerHTML += servicioHTML;
+});
+
                     } else {
                         console.error('Error al obtener los servicios:', xhr.statusText);
                     }
                 };
-
+    
                 xhr.onerror = function() {
                     console.error('Error de red al intentar obtener los servicios.');
                 };
-
+    
                 xhr.send();
             }
-
+    
             // Obtener los servicios al cargar la página
             obtenerServicios();
         });
     </script>
+    
 </body>
 </html>

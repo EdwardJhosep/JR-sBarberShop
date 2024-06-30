@@ -18,5 +18,5 @@ Route::get('/notificacion', [PagesController::class, 'notificacion'])->name('not
 Route::get('/citas', [PagesController::class, 'citas'])->name('citas');
 Route::get('/empleados', [PagesController::class, 'empleados'])->name('empleados');
 Route::get('/servicios1', [PagesController::class, 'servicios1'])->name('servicios1');
-
+Route::get('/miscitas', [PagesController::class, 'miscitas'])->name('miscitas');
 
